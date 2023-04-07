@@ -11,15 +11,7 @@ def solution(p: float, x: np.array) -> tuple:
     # Это будет вашим решением
     # Не меняйте название функции и её аргументы
     alpha = 1 - p
-    n = len(x)
-    mean = np.mean(x)
-    std = np.std(x, ddof=1)  # исправленное стандартное отклонение
-    
-    # находим критическое значение стандартного нормального распределения
-    z = norm.ppf(1 - alpha / 2)
-    
-    # находим границы доверительного интервала
-    left = mean - z * std / np.sqrt(n)
-    right = mean + z * std / np.sqrt(n)
-
-    return (left, right)
+    loc = x.mean()
+    scale = np.sqrt(np.var(x)) / np.sqrt(len(x))
+    return loc - scale * norm.ppf(1 - alpha / 2), \
+           loc - scale * norm.ppf(alpha / 2)
