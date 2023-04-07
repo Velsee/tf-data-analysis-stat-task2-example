@@ -10,12 +10,16 @@ def solution(p: float, x: np.array) -> tuple:
     # Измените код этой функции
     # Это будет вашим решением
     # Не меняйте название функции и её аргументы
-    n = x.shape[0]
+    alpha = 1 - p
+    n = len(x)
     mean = np.mean(x)
-    std = np.std(x, ddof=1)
+    std = np.std(x, ddof=1)  # исправленное стандартное отклонение
     
-    q = norm.ppf(1 - (1 - p) / 2)  # квантиль нормального распределения
-    left = mean - q * std / np.sqrt(n) - 0.074
-    right = mean - q * std / np.sqrt(n)
+    # находим критическое значение стандартного нормального распределения
+    z = norm.ppf(1 - alpha / 2)
     
+    # находим границы доверительного интервала
+    left = mean - z * std / np.sqrt(n)
+    right = mean + z * std / np.sqrt(n)
+
     return (left, right)
